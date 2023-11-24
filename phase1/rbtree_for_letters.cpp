@@ -1,14 +1,16 @@
 #include <iostream>
 #include <string>
+#include <sstream>
 
 enum Color { RED, BLACK };
 
 struct Node {
     std::string key;
+    double stockPrice;  // Add stock price field
     Color color;
     Node *left, *right, *parent;
 
-    Node(std::string key) : key(key), color(RED), left(nullptr), right(nullptr), parent(nullptr) {}
+    Node(std::string key, double stockPrice) : key(key), stockPrice(stockPrice), color(RED), left(nullptr), right(nullptr), parent(nullptr) {}
 };
 
 class RedBlackTree {
@@ -26,7 +28,7 @@ public:
     RedBlackTree() : root(nullptr) {}
 
     // Public interface
-    void insert(std::string key);
+    void insert(std::string key, double stockPrice);
     void remove(std::string key);
     void printTree();
 };
@@ -39,7 +41,7 @@ void inOrderTraversal(Node *root, int x) {
         for(int i = 0; i<x; i++){
             std::cout <<"\t";
         }
-        std::cout <<"|--"<< root->key <<"\n";
+        std::cout <<"|--"<< root->key << " "<< root->stockPrice <<"\n";
         inOrderTraversal(root->left, x+1);
     }
 }
@@ -146,8 +148,8 @@ void RedBlackTree::transplant(Node *u, Node *v) {
 }
 
 // Public method to insert a key into the tree
-void RedBlackTree::insert(std::string key) {
-    Node *z = new Node(key);
+void RedBlackTree::insert(std::string key, double stockPrice) {
+    Node *z = new Node(key, stockPrice);  // Pass stockPrice to the Node constructor
     Node *y = nullptr;
     Node *x = root;
 
@@ -277,26 +279,40 @@ void RedBlackTree::remove(std::string key) {
 int main() {
     RedBlackTree rbTree;
 
-    // Insert 5-letter words
-    rbTree.insert("apple_576");
-    rbTree.insert("grape_57");
-    // rbTree.insert("grape");
-    // rbTree.insert("grape");
-    rbTree.insert("melon_34");
-    rbTree.insert("melon_5675");
-    rbTree.insert("melon");
-    rbTree.insert("lemon_546");
-    rbTree.insert("lemon");
-    rbTree.insert("kiwik");
+    // Insert 5-letter words with stock prices
+    rbTree.insert("apple", 150.25);
+    rbTree.insert("grape", 75.50);
+    rbTree.insert("krish", 120.75);
+    rbTree.insert("hutiy", 200.30);
+    rbTree.insert("suruu", 180.00);
+    rbTree.insert("lemen", 90.20);
+    rbTree.insert("lmon", 110.60);
+    rbTree.insert("kiwik", 250.80);
+    rbTree.insert("kiwik", 29.80);
+    rbTree.insert("zigot", 250.80);
 
     // Print the tree
     std::cout << "Red-Black Tree: \n";
     rbTree.printTree();
 
     // Remove a word and print the tree
-    rbTree.remove("kiwik");
-    std::cout << "After removing 'kiwik': \n";
+    rbTree.remove("lmon");
+    std::cout << "After removing 'hutiy': \n";
     rbTree.printTree();
 
-    return 0;
+    std::string stock;
+    double stockPrice;
+    char option;
+
+    std::string messgs = "A 150 s#\nA 140 b#\nA 140 s#\nA 120 b#";
+    for(int i = 0; i < messgs.length(); i++){
+        std::string k = "";
+        while(messgs[i] != '#'){
+            k += messgs[i];
+            i++;
+        }
+        std::istringstream iss(k);
+        iss >> stock >> stockPrice >> option;
+        i++;
+    }
 }
