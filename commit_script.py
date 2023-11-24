@@ -8,6 +8,7 @@ commit_message = input("Enter commit message : ")
 commands = [
     'git add .',
     'git status',
+    'git pull',
     f'git commit -m "{commit_message}"',
     'git push'
 ]
