@@ -342,10 +342,10 @@ int main() {
 
         Node* stock = rbTree.search(stock_name);
         if(stock){
-            // std::cout << printNode(stock);
+            std::cout << printNode(stock);
             if (option == 'b'){
                 if (stock_p == stock->s){
-                    output += "No Trade\n";
+                    output += "No Trade1\n";
                     continue;
                 }
 
@@ -359,7 +359,7 @@ int main() {
                     stock->b1=stock_p;
                 }
                 else{
-                    output += "No Trade\n";
+                    output += "No Trade2\n";
                     if(stock->b < stock_p){
                         stock->b = std::max(stock->b, stock_p);
                     }
@@ -376,7 +376,7 @@ int main() {
                     stock->t = std::min(stock->t, stock_p);
                 }
                 else{
-                    output += "No Trade\n";
+                    output += "No Trade3\n";
                     stock->s = std::min(stock->s, stock_p);
                 }
             }
@@ -390,8 +390,8 @@ int main() {
                 output += 'b';
             }
             else{
-                output += 'b';
-                // output += "No Trade\n";
+                output += 's';
+                // output += "No Trade4\n";
             }
             output += '\n';
             rbTree.insert(stock_name, stock_p, stock_p, INT32_MAX, 0);
