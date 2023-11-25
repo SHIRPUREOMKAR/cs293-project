@@ -42,7 +42,7 @@ public:
 
 std::string printNode(Node *proxy){
     std::ostringstream oss;
-    oss <<"|--"<< proxy->name << " "<< proxy->stock_price << " "<< proxy->t << " "<< proxy->s << " "<< proxy->b <<"\n";
+    oss <<"|--"<< proxy->name << " "<< proxy->stock_price << " "<< proxy->t << " "<< proxy->s << " "<< proxy->b << " "<< proxy->b1 <<"\n";
     return oss.str();
 }
 
@@ -359,18 +359,19 @@ int main() {
 
         Node* stock = rbTree.search(stock_name);
         if(stock){
-            // std::cout << printNode(stock);
+            std::cout << printNode(stock);
             if (option == 'b'){
                 // if ()
-                if (stock_p > stock -> t){
+                if (stock_p > stock -> t && stock_p >= stock->b1){
                     output += stock_name;
                     output += ' ';
                     output += std::to_string(int(stock_p));
                     output += ' ';
                     output += 's';
                     output += '\n';
+                    stock->b1=stock_p;
                 }
-                else if(stock_p <= stock->b){
+                else{
                     output += "No Trade";
                     output += '\n';
                     if(stock->b < stock_p){
