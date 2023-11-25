@@ -7,10 +7,13 @@ enum Color { RED, BLACK };
 struct Node {
     std::string key;
     double stockPrice;  // Add stock price field
+    double t;
+    double s;
+    double b;
     Color color;
     Node *left, *right, *parent;
 
-    Node(std::string key, double stockPrice) : key(key), stockPrice(stockPrice), color(RED), left(nullptr), right(nullptr), parent(nullptr) {}
+    Node(std::string key, double stockPrice, double t, double s, double b) : key(key), stockPrice(stockPrice), t(t), s(s), b(b), color(RED), left(nullptr), right(nullptr), parent(nullptr) {}
 };
 
 class RedBlackTree {
@@ -28,7 +31,7 @@ public:
     RedBlackTree() : root(nullptr) {}
 
     // Public interface
-    void insert(std::string key, double stockPrice);
+    void insert(std::string key, double stockPrice, double t, double s, double b);
     void remove(std::string key);
     void printTree();
 };
@@ -41,7 +44,7 @@ void inOrderTraversal(Node *root, int x) {
         for(int i = 0; i<x; i++){
             std::cout <<"\t";
         }
-        std::cout <<"|--"<< root->key << " "<< root->stockPrice <<"\n";
+        std::cout <<"|--"<< root->key << " "<< root->stockPrice << " "<< root->t << " "<< root->s << " "<< root->b <<"\n";
         inOrderTraversal(root->left, x+1);
     }
 }
@@ -148,8 +151,8 @@ void RedBlackTree::transplant(Node *u, Node *v) {
 }
 
 // Public method to insert a key into the tree
-void RedBlackTree::insert(std::string key, double stockPrice) {
-    Node *z = new Node(key, stockPrice);  // Pass stockPrice to the Node constructor
+void RedBlackTree::insert(std::string key, double stockPrice, double t, double s, double b) {
+    Node *z = new Node(key, stockPrice, t, s, b);  // Pass stockPrice to the Node constructor
     Node *y = nullptr;
     Node *x = root;
 
@@ -280,16 +283,16 @@ int main() {
     RedBlackTree rbTree;
 
     // Insert 5-letter words with stock prices
-    rbTree.insert("apple", 150.25);
-    rbTree.insert("grape", 75.50);
-    rbTree.insert("krish", 120.75);
-    rbTree.insert("hutiy", 200.30);
-    rbTree.insert("suruu", 180.00);
-    rbTree.insert("lemen", 90.20);
-    rbTree.insert("lmon", 110.60);
-    rbTree.insert("kiwik", 250.80);
-    rbTree.insert("kiwik", 29.80);
-    rbTree.insert("zigot", 250.80);
+    rbTree.insert("apple", 150.25, 150.25, INT32_MAX, 0);
+    rbTree.insert("grape", 75.50, 75.50, INT32_MAX, 0);
+    rbTree.insert("krish", 120.75, 120.75, INT32_MAX, 0);
+    rbTree.insert("hutiy", 200.30, 200.30, INT32_MAX, 0);
+    rbTree.insert("suruu", 180.00, 180.00, INT32_MAX, 0);
+    rbTree.insert("lemen", 90.20,  90.20, INT32_MAX, 0);
+    rbTree.insert("lmon", 110.60, 110.60, INT32_MAX, 0);
+    rbTree.insert("kiwik", 250.80, 250.80, INT32_MAX, 0);
+    rbTree.insert("kiwik", 29.80,  29.80, INT32_MAX, 0);
+    rbTree.insert("zigot", 250.80, 250.80, INT32_MAX, 0);
 
     // Print the tree
     std::cout << "Red-Black Tree: \n";
