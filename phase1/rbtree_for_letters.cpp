@@ -42,7 +42,6 @@ std::string printNode(Node *proxy){
     oss <<"|--"<< proxy->key << " "<< proxy->stockPrice << " "<< proxy->t << " "<< proxy->s << " "<< proxy->b <<"\n";
     return oss.str();
 }
-// Helper function to print the tree (in-order traversal)
 
 void inOrderTraversal(Node *root, int x) {
     if (root != nullptr) {
@@ -56,13 +55,11 @@ void inOrderTraversal(Node *root, int x) {
     }
 }
 
-// Public method to print the tree
 void RedBlackTree::printTree() {
     inOrderTraversal(root, 0);
     std::cout << std::endl;
 }
 
-// Helper function to fix the tree after insertion
 void RedBlackTree::insertFixup(Node *z) {
     while (z->parent && z->parent->color == RED) {
         if (z->parent == z->parent->parent->left) {
@@ -102,7 +99,6 @@ void RedBlackTree::insertFixup(Node *z) {
     root->color = BLACK;
 }
 
-// Helper function for left rotation
 void RedBlackTree::leftRotate(Node *x) {
     Node *y = x->right;
     x->right = y->left;
@@ -137,7 +133,6 @@ Node* RedBlackTree::search(std::string key) {
     return nullptr;
 }
 
-// Helper function for right rotation
 void RedBlackTree::rightRotate(Node *y) {
     Node *x = y->left;
     y->left = x->right;
@@ -154,14 +149,12 @@ void RedBlackTree::rightRotate(Node *y) {
     y->parent = x;
 }
 
-// Helper function to find the minimum node in a subtree
 Node *RedBlackTree::minimum(Node *x) {
     while (x->left)
         x = x->left;
     return x;
 }
 
-// Helper function to transplant a subtree
 void RedBlackTree::transplant(Node *u, Node *v) {
     if (!u->parent)
         root = v;
@@ -173,7 +166,6 @@ void RedBlackTree::transplant(Node *u, Node *v) {
         v->parent = u->parent;
 }
 
-// Public method to insert a key into the tree
 void RedBlackTree::insert(std::string key, double stockPrice, double t, double s, double b) {
     Node *z = new Node(key, stockPrice, t, s, b);  // Pass stockPrice to the Node constructor
     Node *y = nullptr;
@@ -198,7 +190,6 @@ void RedBlackTree::insert(std::string key, double stockPrice, double t, double s
     insertFixup(z);
 }
 
-// Public method to remove a key from the tree
 void RedBlackTree::remove(std::string key) {
     Node *z = root;
     while (z) {
