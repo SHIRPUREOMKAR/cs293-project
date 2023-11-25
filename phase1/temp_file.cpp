@@ -341,7 +341,6 @@ int main() {
     while(x != "$"){
         messgs += x;
         std::getline(std::cin, x);
-        // std::cout<<x;
     }
 
 
