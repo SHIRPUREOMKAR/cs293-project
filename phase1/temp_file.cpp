@@ -5,16 +5,19 @@
 enum Color { RED, BLACK };
 
 struct Node {
-    std::string key;
-    double stock_price;  // Add stock price field
+    std::string name;
+    double stock_price;
     double t;
     double s;
     double b;
+    double b1;  // Add the new variable
     Color color;
     Node *left, *right, *parent;
 
-    Node(std::string key, double stock_price, double t, double s, double b) : key(key), stock_price(stock_price), t(t), s(s), b(b), color(RED), left(nullptr), right(nullptr), parent(nullptr) {}
+    Node(std::string name, double stock_price, double t, double s, double b, double b1)
+        : name(name), stock_price(stock_price), t(t), s(s), b(b), b1(b1), color(RED), left(nullptr), right(nullptr), parent(nullptr) {}
 };
+
 
 class RedBlackTree {
 private:
@@ -31,15 +34,15 @@ public:
     RedBlackTree() : root(nullptr) {}
 
     // Public interface
-    void insert(std::string key, double stock_price, double t, double s, double b);
-    void remove(std::string key);
+    void insert(std::string name, double stock_price, double t, double s, double b);
+    void remove(std::string name);
     void printTree();
-    Node* search(std::string key);
+    Node* search(std::string name);
 };
 
 std::string printNode(Node *proxy){
     std::ostringstream oss;
-    oss <<"|--"<< proxy->key << " "<< proxy->stock_price << " "<< proxy->t << " "<< proxy->s << " "<< proxy->b <<"\n";
+    oss <<"|--"<< proxy->name << " "<< proxy->stock_price << " "<< proxy->t << " "<< proxy->s << " "<< proxy->b <<"\n";
     return oss.str();
 }
 
@@ -49,7 +52,7 @@ void inOrderTraversal(Node *root, int x) {
         for(int i = 0; i<x; i++){
             std::cout <<"\t";
         }
-        std::cout <<"|--"<< root->key << " "<< root->stock_price << " "<< root->t << " "<< root->s << " "<< root->b <<"\n";
+        std::cout <<"|--"<< root->name << " "<< root->stock_price << " "<< root->t << " "<< root->s << " "<< root->b <<"\n";
         // printNode(root);
         inOrderTraversal(root->left, x+1);
     }
@@ -115,21 +118,21 @@ void RedBlackTree::leftRotate(Node *x) {
     x->parent = y;
 }
 
-Node* RedBlackTree::search(std::string key) {
+Node* RedBlackTree::search(std::string name) {
     Node* current = root;
 
     while (current) {
-        if (key == current->key) {
-            // Key found
+        if (name == current->name) {
+            // name found
             return current;
-        } else if (key < current->key) {
+        } else if (name < current->name) {
             current = current->left;
         } else {
             current = current->right;
         }
     }
 
-    // Key not found
+    // name not found
     return nullptr;
 }
 
@@ -166,14 +169,14 @@ void RedBlackTree::transplant(Node *u, Node *v) {
         v->parent = u->parent;
 }
 
-void RedBlackTree::insert(std::string key, double stock_price, double t, double s, double b) {
-    Node *z = new Node(key, stock_price, t, s, b);  // Pass stock_price to the Node constructor
+void RedBlackTree::insert(std::string name, double stock_price, double t, double s, double b) {
+    Node *z = new Node(name, stock_price, t, s, b, 0.0);
     Node *y = nullptr;
     Node *x = root;
 
     while (x) {
         y = x;
-        if (z->key < x->key)
+        if (z->name < x->name)
             x = x->left;
         else
             x = x->right;
@@ -182,7 +185,7 @@ void RedBlackTree::insert(std::string key, double stock_price, double t, double 
     z->parent = y;
     if (!y)
         root = z;
-    else if (z->key < y->key)
+    else if (z->name < y->name)
         y->left = z;
     else
         y->right = z;
@@ -190,12 +193,12 @@ void RedBlackTree::insert(std::string key, double stock_price, double t, double 
     insertFixup(z);
 }
 
-void RedBlackTree::remove(std::string key) {
+void RedBlackTree::remove(std::string name) {
     Node *z = root;
     while (z) {
-        if (key == z->key)
+        if (name == z->name)
             break;
-        else if (key < z->key)
+        else if (name < z->name)
             z = z->left;
         else
             z = z->right;
@@ -303,7 +306,7 @@ void RedBlackTree::remove(std::string key) {
     // Search a stock  : 
     // Node *result = tree_name.search("stock_name")
     // if found, the stock is stored in node result, else nullptr.
-    // stock_name = result->key
+    // stock_name = result->name
     // stock_price = result->stock_price
     // threshold = result->t
     // s = result->s
@@ -330,11 +333,12 @@ int main() {
     // std::cout << "After removing 'lmon': \n";
     // rbTree.printTree();
 
-    std::string stock;
-    double stock_price;
+    std::string stock_name;
+    double stock_p;
     char option;
 
     std::string messgs = "";
+    std::string output = "";
     std::string x = "";
     std::cin>>x;
 
@@ -351,19 +355,59 @@ int main() {
         }
         
         std::istringstream iss(k);
-        iss >> stock >> stock_price >> option;
+        iss >> stock_name >> stock_p >> option;
 
-        Node* search_result = rbTree.search(stock);
-        if(search_result){
-            // std::cout << printNode(search_result);
+        Node* stock = rbTree.search(stock_name);
+        if(stock){
+            // std::cout << printNode(stock);
+            if (option == 'b'){
+                // if ()
+                if (stock_p > stock -> t){
+                    output += stock_name;
+                    output += ' ';
+                    output += std::to_string(int(stock_p));
+                    output += ' ';
+                    output += 's';
+                    output += '\n';
+                }
+                else if(stock_p <= stock->b){
+                    output += "No Trade";
+                    output += '\n';
+                    if(stock->b < stock_p){
+                        stock->b = std::max(stock->b, stock_p);
+                    }
+                }
+            }
+            else{
+                if(stock_p <= stock->t){
+                    output += stock_name;
+                    output += ' ';
+                    output += std::to_string(int(stock_p));
+                    output += ' ';
+                    output += 'b';
+                    output += '\n';
+                    stock->t = std::min(stock->t, stock_p);
+                }
+                else{
+                    output += "No Trade\n";
+                    stock->s = std::min(stock->s, stock_p);
+                }
+            }
         }
         else{
-            rbTree.insert(stock, stock_price, stock_price, INT32_MAX, 0);
+            output += stock_name;
+            output += ' ';
+            output += std::to_string(int(stock_p));
+            output += ' ';
+            output += 'b';
+            output += '\n';
+            rbTree.insert(stock_name, stock_p, stock_p, INT32_MAX, 0);
         }
-        // i++;
     }
     std::cout << "Red-Black Tree: \n";
     rbTree.printTree();
+
+    std::cout<<output<<"\n";
 
     return 0;
 }
