@@ -343,7 +343,6 @@ int main() {
         std::getline(std::cin, x);
     }
 
-
     for(int i = 0; i < messgs.length(); i++){
         std::string k = "";
         while(messgs[i] != '#'){
@@ -365,4 +364,6 @@ int main() {
     }
     std::cout << "Red-Black Tree: \n";
     rbTree.printTree();
+
+    return 0;
 }
