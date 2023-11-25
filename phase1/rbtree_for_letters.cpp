@@ -6,14 +6,14 @@ enum Color { RED, BLACK };
 
 struct Node {
     std::string key;
-    double stockPrice;  // Add stock price field
+    double stock_price;  // Add stock price field
     double t;
     double s;
     double b;
     Color color;
     Node *left, *right, *parent;
 
-    Node(std::string key, double stockPrice, double t, double s, double b) : key(key), stockPrice(stockPrice), t(t), s(s), b(b), color(RED), left(nullptr), right(nullptr), parent(nullptr) {}
+    Node(std::string key, double stock_price, double t, double s, double b) : key(key), stock_price(stock_price), t(t), s(s), b(b), color(RED), left(nullptr), right(nullptr), parent(nullptr) {}
 };
 
 class RedBlackTree {
@@ -31,7 +31,7 @@ public:
     RedBlackTree() : root(nullptr) {}
 
     // Public interface
-    void insert(std::string key, double stockPrice, double t, double s, double b);
+    void insert(std::string key, double stock_price, double t, double s, double b);
     void remove(std::string key);
     void printTree();
     Node* search(std::string key);
@@ -39,7 +39,7 @@ public:
 
 std::string printNode(Node *proxy){
     std::ostringstream oss;
-    oss <<"|--"<< proxy->key << " "<< proxy->stockPrice << " "<< proxy->t << " "<< proxy->s << " "<< proxy->b <<"\n";
+    oss <<"|--"<< proxy->key << " "<< proxy->stock_price << " "<< proxy->t << " "<< proxy->s << " "<< proxy->b <<"\n";
     return oss.str();
 }
 
@@ -49,7 +49,7 @@ void inOrderTraversal(Node *root, int x) {
         for(int i = 0; i<x; i++){
             std::cout <<"\t";
         }
-        std::cout <<"|--"<< root->key << " "<< root->stockPrice << " "<< root->t << " "<< root->s << " "<< root->b <<"\n";
+        std::cout <<"|--"<< root->key << " "<< root->stock_price << " "<< root->t << " "<< root->s << " "<< root->b <<"\n";
         // printNode(root);
         inOrderTraversal(root->left, x+1);
     }
@@ -166,8 +166,8 @@ void RedBlackTree::transplant(Node *u, Node *v) {
         v->parent = u->parent;
 }
 
-void RedBlackTree::insert(std::string key, double stockPrice, double t, double s, double b) {
-    Node *z = new Node(key, stockPrice, t, s, b);  // Pass stockPrice to the Node constructor
+void RedBlackTree::insert(std::string key, double stock_price, double t, double s, double b) {
+    Node *z = new Node(key, stock_price, t, s, b);  // Pass stock_price to the Node constructor
     Node *y = nullptr;
     Node *x = root;
 
@@ -304,7 +304,7 @@ void RedBlackTree::remove(std::string key) {
     // Node *result = tree_name.search("stock_name")
     // if found, the stock is stored in node result, else nullptr.
     // stock_name = result->key
-    // stock_price = result->stockPrice
+    // stock_price = result->stock_price
     // threshold = result->t
     // s = result->s
     // b = result->b
@@ -313,29 +313,38 @@ void RedBlackTree::remove(std::string key) {
 int main() {
     RedBlackTree rbTree;
 
-    rbTree.insert("apple", 150.25, 150.25, INT32_MAX, 0);
-    rbTree.insert("grape", 75.50, 75.50, INT32_MAX, 0);
-    rbTree.insert("krish", 120.75, 120.75, INT32_MAX, 0);
-    rbTree.insert("hutiy", 200.30, 200.30, INT32_MAX, 0);
-    rbTree.insert("kiwi", 29.80,  29.80, INT32_MAX, 0);
-    rbTree.insert("suruu", 180.00, 180.00, INT32_MAX, 0);
-    rbTree.insert("lemen", 90.20,  90.20, INT32_MAX, 0);
-    rbTree.insert("lmon", 110.60, 110.60, INT32_MAX, 0);
-    rbTree.insert("kiwik", 250.80, 250.80, INT32_MAX, 0);
-    rbTree.insert("zigot", 250.80, 250.80, INT32_MAX, 0);
-
-    std::cout << "Red-Black Tree: \n";
-    rbTree.printTree();
+    // rbTree.insert("apple", 150.25, 150.25, INT32_MAX, 0);
+    // rbTree.insert("appy", 15.25, 15.25, INT32_MAX, 0);
+    // rbTree.insert("pappyyy", 17.25, 17.25, INT32_MAX, 0);
+    // rbTree.insert("grape", 75.50, 75.50, INT32_MAX, 0);
+    // rbTree.insert("krish", 120.75, 120.75, INT32_MAX, 0);
+    // rbTree.insert("hutiy", 200.30, 200.30, INT32_MAX, 0);
+    // rbTree.insert("kiwi", 29.80,  29.80, INT32_MAX, 0);
+    // rbTree.insert("suruu", 180.00, 180.00, INT32_MAX, 0);
+    // rbTree.insert("lemen", 90.20,  90.20, INT32_MAX, 0);
+    // rbTree.insert("lmon", 110.60, 110.60, INT32_MAX, 0);
+    // rbTree.insert("kiwik", 250.80, 250.80, INT32_MAX, 0);
+    // rbTree.insert("zigot", 250.80, 250.80, INT32_MAX, 0);
 
     // rbTree.remove("lmon");
     // std::cout << "After removing 'lmon': \n";
     // rbTree.printTree();
 
     std::string stock;
-    double stockPrice;
+    double stock_price;
     char option;
 
-    std::string messgs = "zigot 150 s#\nA 140 b#\nlemen 140 s#\nA 120 b#";
+    std::string messgs = "";
+    std::string x = "";
+    std::cin>>x;
+
+    while(x != "$"){
+        messgs += x;
+        std::getline(std::cin, x);
+        std::cout<<x;
+    }
+
+
     for(int i = 0; i < messgs.length(); i++){
         std::string k = "";
         while(messgs[i] != '#'){
@@ -343,13 +352,17 @@ int main() {
             i++;
         }
         std::istringstream iss(k);
-        iss >> stock >> stockPrice >> option;
+        iss >> stock >> stock_price >> option;
 
         Node* search_result = rbTree.search(stock);
         if(search_result){
-            std::cout << printNode(search_result);
+            // std::cout << printNode(search_result);
         }
-
-        i++;
+        else{
+            rbTree.insert(stock, stock_price, stock_price, INT32_MAX, 0);
+        }
+        // i++;
     }
+    std::cout << "Red-Black Tree: \n";
+    rbTree.printTree();
 }
