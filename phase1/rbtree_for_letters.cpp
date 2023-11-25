@@ -34,8 +34,14 @@ public:
     void insert(std::string key, double stockPrice, double t, double s, double b);
     void remove(std::string key);
     void printTree();
+    Node* search(std::string key);
 };
 
+std::string printNode(Node *proxy){
+    std::ostringstream oss;
+    oss <<"|--"<< proxy->key << " "<< proxy->stockPrice << " "<< proxy->t << " "<< proxy->s << " "<< proxy->b <<"\n";
+    return oss.str();
+}
 // Helper function to print the tree (in-order traversal)
 
 void inOrderTraversal(Node *root, int x) {
@@ -45,6 +51,7 @@ void inOrderTraversal(Node *root, int x) {
             std::cout <<"\t";
         }
         std::cout <<"|--"<< root->key << " "<< root->stockPrice << " "<< root->t << " "<< root->s << " "<< root->b <<"\n";
+        // printNode(root);
         inOrderTraversal(root->left, x+1);
     }
 }
@@ -54,6 +61,10 @@ void RedBlackTree::printTree() {
     inOrderTraversal(root, 0);
     std::cout << std::endl;
 }
+
+// void printNode(Node *proxy){
+//     std::cout <<"|--"<< proxy->key << " "<< proxy->stockPrice << " "<< proxy->t << " "<< proxy->s << " "<< proxy->b <<"\n";
+// }
 
 
 
@@ -112,6 +123,24 @@ void RedBlackTree::leftRotate(Node *x) {
         x->parent->right = y;
     y->left = x;
     x->parent = y;
+}
+
+Node* RedBlackTree::search(std::string key) {
+    Node* current = root;
+
+    while (current) {
+        if (key == current->key) {
+            // Key found
+            return current;
+        } else if (key < current->key) {
+            current = current->left;
+        } else {
+            current = current->right;
+        }
+    }
+
+    // Key not found
+    return nullptr;
 }
 
 // Helper function for right rotation
@@ -307,7 +336,7 @@ int main() {
     double stockPrice;
     char option;
 
-    std::string messgs = "A 150 s#\nA 140 b#\nA 140 s#\nA 120 b#";
+    std::string messgs = "zigot 150 s#\nA 140 b#\nlemen 140 s#\nA 120 b#";
     for(int i = 0; i < messgs.length(); i++){
         std::string k = "";
         while(messgs[i] != '#'){
@@ -316,6 +345,12 @@ int main() {
         }
         std::istringstream iss(k);
         iss >> stock >> stockPrice >> option;
+
+        Node* search_result = rbTree.search(stock);
+        if(search_result){
+            std::cout << printNode(search_result);
+        }
+
         i++;
     }
 }
