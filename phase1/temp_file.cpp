@@ -316,23 +316,6 @@ void RedBlackTree::remove(std::string name) {
 int main() {
     RedBlackTree rbTree;
 
-    // rbTree.insert("apple", 150.25, 150.25, INT32_MAX, 0);
-    // rbTree.insert("appy", 15.25, 15.25, INT32_MAX, 0);
-    // rbTree.insert("pappyyy", 17.25, 17.25, INT32_MAX, 0);
-    // rbTree.insert("grape", 75.50, 75.50, INT32_MAX, 0);
-    // rbTree.insert("krish", 120.75, 120.75, INT32_MAX, 0);
-    // rbTree.insert("hutiy", 200.30, 200.30, INT32_MAX, 0);
-    // rbTree.insert("kiwi", 29.80,  29.80, INT32_MAX, 0);
-    // rbTree.insert("suruu", 180.00, 180.00, INT32_MAX, 0);
-    // rbTree.insert("lemen", 90.20,  90.20, INT32_MAX, 0);
-    // rbTree.insert("lmon", 110.60, 110.60, INT32_MAX, 0);
-    // rbTree.insert("kiwik", 250.80, 250.80, INT32_MAX, 0);
-    // rbTree.insert("zigot", 250.80, 250.80, INT32_MAX, 0);
-
-    // rbTree.remove("lmon");
-    // std::cout << "After removing 'lmon': \n";
-    // rbTree.printTree();
-
     std::string stock_name;
     double stock_p;
     char option;
@@ -359,9 +342,13 @@ int main() {
 
         Node* stock = rbTree.search(stock_name);
         if(stock){
-            std::cout << printNode(stock);
+            // std::cout << printNode(stock);
             if (option == 'b'){
-                // if ()
+                if (stock_p == stock->s){
+                    output += "No Trade\n";
+                    continue;
+                }
+
                 if (stock_p > stock -> t && stock_p >= stock->b1){
                     output += stock_name;
                     output += ' ';
@@ -372,8 +359,7 @@ int main() {
                     stock->b1=stock_p;
                 }
                 else{
-                    output += "No Trade";
-                    output += '\n';
+                    output += "No Trade\n";
                     if(stock->b < stock_p){
                         stock->b = std::max(stock->b, stock_p);
                     }
@@ -396,12 +382,17 @@ int main() {
             }
         }
         else{
-            output += stock_name;
-            output += ' ';
-            output += std::to_string(int(stock_p));
-            output += ' ';
-            output += 'b';
-            output += '\n';
+            if(option == 's'){
+                output += stock_name;
+                output += ' ';
+                output += std::to_string(int(stock_p));
+                output += ' ';
+                output += 'b';
+                output += '\n';
+            }
+            else{
+                output += "No Trade\n";
+            }
             rbTree.insert(stock_name, stock_p, stock_p, INT32_MAX, 0);
         }
     }
