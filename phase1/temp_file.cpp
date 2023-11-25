@@ -382,17 +382,18 @@ int main() {
             }
         }
         else{
+            output += stock_name;
+            output += ' ';
+            output += std::to_string(int(stock_p));
+            output += ' ';
             if(option == 's'){
-                output += stock_name;
-                output += ' ';
-                output += std::to_string(int(stock_p));
-                output += ' ';
                 output += 'b';
-                output += '\n';
             }
             else{
-                output += "No Trade\n";
+                output += 'b';
+                // output += "No Trade\n";
             }
+            output += '\n';
             rbTree.insert(stock_name, stock_p, stock_p, INT32_MAX, 0);
         }
     }
