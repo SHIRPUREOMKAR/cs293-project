@@ -62,12 +62,6 @@ void RedBlackTree::printTree() {
     std::cout << std::endl;
 }
 
-// void printNode(Node *proxy){
-//     std::cout <<"|--"<< proxy->key << " "<< proxy->stockPrice << " "<< proxy->t << " "<< proxy->s << " "<< proxy->b <<"\n";
-// }
-
-
-
 // Helper function to fix the tree after insertion
 void RedBlackTree::insertFixup(Node *z) {
     while (z->parent && z->parent->color == RED) {
@@ -308,29 +302,43 @@ void RedBlackTree::remove(std::string key) {
         x->color = BLACK;
 }
 
+
+    // Function aagar use karne hai for the operations on tree:
+    // Add a node      : tree_name.insert("stock_name", stock_price, threshold, s, b)
+    // Delete a node   : tree_name.remove("stock_name")
+    // Print a tree    : tree_name.printTree();
+
+    // Function aagar use karne hai for the operations on individual stock:
+    // Search a stock  : 
+    // Node *result = tree_name.search("stock_name")
+    // if found, the stock is stored in node result, else nullptr.
+    // stock_name = result->key
+    // stock_price = result->stockPrice
+    // threshold = result->t
+    // s = result->s
+    // b = result->b
+
+
 int main() {
     RedBlackTree rbTree;
 
-    // Insert 5-letter words with stock prices
     rbTree.insert("apple", 150.25, 150.25, INT32_MAX, 0);
     rbTree.insert("grape", 75.50, 75.50, INT32_MAX, 0);
     rbTree.insert("krish", 120.75, 120.75, INT32_MAX, 0);
     rbTree.insert("hutiy", 200.30, 200.30, INT32_MAX, 0);
+    rbTree.insert("kiwi", 29.80,  29.80, INT32_MAX, 0);
     rbTree.insert("suruu", 180.00, 180.00, INT32_MAX, 0);
     rbTree.insert("lemen", 90.20,  90.20, INT32_MAX, 0);
     rbTree.insert("lmon", 110.60, 110.60, INT32_MAX, 0);
     rbTree.insert("kiwik", 250.80, 250.80, INT32_MAX, 0);
-    rbTree.insert("kiwik", 29.80,  29.80, INT32_MAX, 0);
     rbTree.insert("zigot", 250.80, 250.80, INT32_MAX, 0);
 
-    // Print the tree
     std::cout << "Red-Black Tree: \n";
     rbTree.printTree();
 
-    // Remove a word and print the tree
-    rbTree.remove("lmon");
-    std::cout << "After removing 'hutiy': \n";
-    rbTree.printTree();
+    // rbTree.remove("lmon");
+    // std::cout << "After removing 'lmon': \n";
+    // rbTree.printTree();
 
     std::string stock;
     double stockPrice;
