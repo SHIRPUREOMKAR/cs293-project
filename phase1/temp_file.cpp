@@ -344,7 +344,7 @@ int main() {
         if(stock){
             std::cout << printNode(stock);
             if (option == 'b'){
-                if (stock_p == stock->s){
+                if (stock_p == stock->s || stock_p == stock->b1){
                     output += "No Trade1\n";
                     continue;
                 }
@@ -365,7 +365,13 @@ int main() {
                     }
                 }
             }
+            // option == s
             else{
+                if (stock_p == stock->s || stock_p == stock->b1){
+                    output += "No Trade1\n";
+                    stock->t = stock_p;
+                    continue;
+                }
                 if(stock_p <= stock->t){
                     output += stock_name;
                     output += ' ';
@@ -376,10 +382,24 @@ int main() {
                     stock->t = std::min(stock->t, stock_p);
                 }
                 else{
-                    output += "No Trade3\n";
-                    stock->s = std::min(stock->s, stock_p);
+                    // std::cout<<stock->s<<"\n";
+                    // if(stock_p < stock->s){
+                    //     output += stock_name;
+                    //     output += ' ';
+                    //     output += std::to_string(int(stock_p));
+                    //     output += ' ';
+                    //     output += 'b';
+                    //     output += '\n';
+                    //     stock->t = std::max(stock->t, stock_p);
+                    //     stock->s = std::min(stock->s, stock_p);
+                    // }
+                    // else {
+                        output += "No Trade3\n";
+                        stock->s = std::min(stock->s, stock_p);
+                    // }
                 }
             }
+            std::cout << printNode(stock);
         }
         else{
             output += stock_name;
@@ -394,8 +414,10 @@ int main() {
                 // output += "No Trade4\n";
             }
             output += '\n';
-            rbTree.insert(stock_name, stock_p, stock_p, INT32_MAX, 0);
-        }
+            
+            // if(option == 'b') rbTree.insert(stock_name, INT32_MAX, INT32_MAX, INT32_MAX, 0);
+            // else 
+            rbTree.insert(stock_name, stock_p, stock_p, INT32_MAX, 0);}
     }
     std::cout << "Red-Black Tree: \n";
     rbTree.printTree();
