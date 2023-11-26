@@ -18,7 +18,6 @@ struct Node {
         : name(name), stock_price(stock_price), t(t), s(s), b(b), b1(b1), color(RED), left(nullptr), right(nullptr), parent(nullptr) {}
 };
 
-
 class RedBlackTree {
 private:
     Node *root;
