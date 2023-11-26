@@ -1,11 +1,12 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+using namespace std;
 
 enum Color { RED, BLACK };
 
 struct Node {
-    std::string name;
+    string name;
     double stock_price;
     double t;
     double s;
@@ -14,7 +15,7 @@ struct Node {
     Color color;
     Node *left, *right, *parent;
 
-    Node(std::string name, double stock_price, double t, double s, double b, double b1)
+    Node(string name, double stock_price, double t, double s, double b, double b1)
         : name(name), stock_price(stock_price), t(t), s(s), b(b), b1(b1), color(RED), left(nullptr), right(nullptr), parent(nullptr) {}
 };
 
@@ -33,14 +34,14 @@ public:
     RedBlackTree() : root(nullptr) {}
 
     // Public interface
-    void insert(std::string name, double stock_price, double t, double s, double b);
-    void remove(std::string name);
+    void insert(string name, double stock_price, double t, double s, double b);
+    void remove(string name);
     void printTree();
-    Node* search(std::string name);
+    Node* search(string name);
 };
 
-std::string printNode(Node *proxy){
-    std::ostringstream oss;
+string printNode(Node *proxy){
+    ostringstream oss;
     oss <<"|--"<< proxy->name << " "<< proxy->stock_price << " "<< proxy->t << " "<< proxy->s << " "<< proxy->b << " "<< proxy->b1 <<"\n";
     return oss.str();
 }
@@ -49,9 +50,9 @@ void inOrderTraversal(Node *root, int x) {
     if (root != nullptr) {
         inOrderTraversal(root->right, x+1);
         for(int i = 0; i<x; i++){
-            std::cout <<"\t";
+            cout <<"\t";
         }
-        std::cout <<"|--"<< root->name << " "<< root->stock_price << " "<< root->t << " "<< root->s << " "<< root->b <<"\n";
+        cout <<"|--"<< root->name << " "<< root->stock_price << " "<< root->t << " "<< root->s << " "<< root->b <<"\n";
         // printNode(root);
         inOrderTraversal(root->left, x+1);
     }
@@ -59,7 +60,7 @@ void inOrderTraversal(Node *root, int x) {
 
 void RedBlackTree::printTree() {
     inOrderTraversal(root, 0);
-    std::cout << std::endl;
+    cout << endl;
 }
 
 void RedBlackTree::insertFixup(Node *z) {
@@ -117,7 +118,7 @@ void RedBlackTree::leftRotate(Node *x) {
     x->parent = y;
 }
 
-Node* RedBlackTree::search(std::string name) {
+Node* RedBlackTree::search(string name) {
     Node* current = root;
 
     while (current) {
@@ -168,7 +169,7 @@ void RedBlackTree::transplant(Node *u, Node *v) {
         v->parent = u->parent;
 }
 
-void RedBlackTree::insert(std::string name, double stock_price, double t, double s, double b) {
+void RedBlackTree::insert(string name, double stock_price, double t, double s, double b) {
     Node *z = new Node(name, stock_price, t, s, b, 0.0);
     Node *y = nullptr;
     Node *x = root;
@@ -192,7 +193,7 @@ void RedBlackTree::insert(std::string name, double stock_price, double t, double
     insertFixup(z);
 }
 
-void RedBlackTree::remove(std::string name) {
+void RedBlackTree::remove(string name) {
     Node *z = root;
     while (z) {
         if (name == z->name)
@@ -315,97 +316,97 @@ void RedBlackTree::remove(std::string name) {
 int main() {
     RedBlackTree rbTree;
 
-    std::string stock_name;
+    string stock_name;
     double stock_p;
     char option;
 
-    std::string messgs = "";
-    std::string output = "";
-    std::string x;
-    // std::cin>>x;
-    // std::getline(std::cin, x);
+    string messgs = "";
+    string output = "";
+    string x;
+    // cin>>x;
+    // getline(cin, x);
 
     while(true){
-        std::getline(std::cin, x);
+        getline(cin, x);
         if(x == "$") break;
         messgs += x;
     }
 
     for(int i = 0; i < messgs.length(); i++){
-        std::string k = "";
+        string k = "";
         while(messgs[i] != '#'){
             k += messgs[i];
             i++;
         }
         
-        std::istringstream iss(k);
+        istringstream iss(k);
         iss >> stock_name >> stock_p >> option;
 
         Node* stock = rbTree.search(stock_name);
         if(stock){
-            // std::cout << printNode(stock);
+            // cout << printNode(stock);
             if (option == 'b'){
-                if (stock_p == stock->s || stock_p == stock->b1){
+                if (stock_p == stock->s || stock_p <= stock->b){
                     output += "No Trade\n";
                     continue;
                 }
 
-                if (stock_p > stock -> t && stock_p >= stock->b1){
+                if (stock_p > stock -> t ){
                     output += stock_name;
                     output += ' ';
-                    output += std::to_string(int(stock_p));
+                    output += to_string(int(stock_p));
                     output += ' ';
                     output += 's';
                     output += '\n';
-                    stock->b1=stock_p;
+                    stock->t=stock_p;
                 }
                 else{
                     output += "No Trade\n";
                     if(stock->b < stock_p){
-                        stock->b = std::max(stock->b, stock_p);
+                        stock->b = max(stock->b, stock_p);
                     }
                 }
             }
             // option == s
             else{
-                if (stock_p == stock->s || stock_p == stock->b1){
-                    output += "No Trade\n";
-                    stock->t = stock_p;
-                    continue;
-                }
-                if(stock_p <= stock->t){
+                // if (stock_p == stock->s || stock_p == stock->b1){
+                //     output += "No Trade\n";
+                //     stock->t = stock_p;
+                //     continue;
+                // }
+                if(stock_p < stock->t){
                     output += stock_name;
                     output += ' ';
-                    output += std::to_string(int(stock_p));
+                    output += to_string(int(stock_p));
                     output += ' ';
                     output += 'b';
                     output += '\n';
-                    stock->t = std::min(stock->t, stock_p);
+                    stock->t = min(stock->t, stock_p);
                 }
                 else{
-                    // std::cout<<stock->s<<"\n";
+                    // cout<<stock->s<<"\n";
                     // if(stock_p < stock->s){
                     //     output += stock_name;
                     //     output += ' ';
-                    //     output += std::to_string(int(stock_p));
+                    //     output += to_string(int(stock_p));
                     //     output += ' ';
                     //     output += 'b';
                     //     output += '\n';
-                    //     stock->t = std::max(stock->t, stock_p);
-                    //     stock->s = std::min(stock->s, stock_p);
+                    //     stock->t = max(stock->t, stock_p);
+                    //     stock->s = min(stock->s, stock_p);
                     // }
                     // else {
                         output += "No Trade\n";
-                        stock->s = std::min(stock->s, stock_p);
+                        stock->s = min(stock->s, stock_p);
                     // }
                 }
             }
-            // std::cout << printNode(stock);
+            // cout << printNode(stock);
         }
         else{
             output += stock_name;
             output += ' ';
-            output += std::to_string(int(stock_p));
+            output += to_string(int(stock_p));
             output += ' ';
             if(option == 's'){
                 output += 'b';
@@ -420,10 +421,10 @@ int main() {
             // else 
             rbTree.insert(stock_name, stock_p, stock_p, INT32_MAX, 0);}
     }
-    // std::cout << "Red-Black Tree: \n";
+    // cout << "Red-Black Tree: \n";
     // rbTree.printTree();
 
-    std::cout<<output<<std::endl;
+    cout<<output<<endl;
 
     return 0;
 }

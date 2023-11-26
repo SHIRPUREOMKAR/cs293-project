@@ -1,0 +1,43 @@
+A 150 s#
+A 140 b#
+A 110 s#
+A 120 b#
+$t_t_
+
+
+A 150 s#
+A 170 b#
+A 110 s#
+A 120 b#
+$tttt
+
+
+A 40 s#
+A 51 s#
+A 52 s#
+A 53 s#
+A 50 b#
+A 51 b#
+A 52 b#
+A 53 b#
+$t_tt_ _ _tt_ _t
+
+A 30 s#
+A 20 b#
+A 40 b#
+A 20 s#
+$t_tt
+
+
+
+
+
+
+
+
+
+Z -1 X 1 20 s and X 1 Z -1 20 b cancel each other because a buy matches a sell.
+Z 1 X -1 20 b ,Z -1 X 1 20 s do not cancel each other.
+
+Z 1 X -1 20 b and X 1 Z -1 20 b form an arbitrage, yes
+ Z -1 X 1 20 s and X 1 Z -1 20 b cancel each other, yes
