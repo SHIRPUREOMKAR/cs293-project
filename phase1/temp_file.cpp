@@ -322,12 +322,14 @@ int main() {
 
     std::string messgs = "";
     std::string output = "";
-    std::string x = "";
-    std::cin>>x;
+    std::string x;
+    // std::cin>>x;
+    // std::getline(std::cin, x);
 
-    while(x != "$"){
-        messgs += x;
+    while(true){
         std::getline(std::cin, x);
+        if(x == "$") break;
+        messgs += x;
     }
 
     for(int i = 0; i < messgs.length(); i++){
@@ -419,10 +421,10 @@ int main() {
             // else 
             rbTree.insert(stock_name, stock_p, stock_p, INT32_MAX, 0);}
     }
-    std::cout << "Red-Black Tree: \n";
-    rbTree.printTree();
+    // std::cout << "Red-Black Tree: \n";
+    // rbTree.printTree();
 
-    std::cout<<output<<"\n";
+    std::cout<<output<<std::endl;
 
     return 0;
 }
