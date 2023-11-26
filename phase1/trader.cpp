@@ -1,7 +1,7 @@
 #include "receiver.h"
 using namespace std;
 
-int main(int argc , char* argv[]) {
+int main(int argc , char** argv) {
 
     Receiver rcv;
     sleep(5);
