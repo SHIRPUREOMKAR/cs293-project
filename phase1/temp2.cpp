@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <unordered_map>
+#include <algorithm>
 
 using namespace std;
 
@@ -117,7 +119,7 @@ public:
             for (const auto& pair : current->stock_combinations) {
                 cout << pair.first << " - " << pair.second << "  |  ";
             }
-            cout<<endl;
+            cout << endl;
             cout << "Price: " << current->price << ", Type: " << current->type << endl;
             cout << "--------------------------" << endl;
             current = current->next;
@@ -144,12 +146,115 @@ public:
             for (const auto& pair : node->stock_combinations) {
                 cout << pair.first << " - " << pair.second << "  |  ";
             }
-            cout<<endl;
+            cout << endl;
             cout << "Price: " << node->price << ", Type: " << node->type << endl;
             cout << "--------------------------" << endl;
         } else {
             cout << "Node is nullptr." << endl;
         }
+    }
+
+    // Function to check for arbitrage opportunities in the order list
+    // Function to check for arbitrage opportunities in the order list
+    bool findArbitrage(vector<int>& arbitrageLineNumbers) {
+        vector<vector<int>> matrix;  // Matrix to store the coefficients of stocks in each order
+        vector<int> constants;       // Vector to store the constant term in each order
+
+        Order* current = head;
+
+        // Construct the matrix and constants vector
+        while (current != nullptr) {
+            vector<int> row;  // Coefficients of stocks in the order
+            for (const auto& pair : current->stock_combinations) {
+                row.push_back(pair.second * (current->type == 'b' ? -1 : 1));  // Fix here
+            }
+            matrix.push_back(row);
+            constants.push_back(current->price * (current->type == 'b' ? -1 : 1));  // Fix here
+            current = current->next;
+        }
+
+        // Add a row with coefficients of stocks in the arbitrage equation (sum of stocks = 0)
+        vector<int> arbitrageRow(matrix[0].size(), 0);
+        matrix.push_back(arbitrageRow);
+        constants.push_back(0);
+
+        // Use Gaussian elimination to solve the system of linear equations
+        if (solveSystem(matrix, constants)) {
+            // The system has a solution, indicating arbitrage
+            for (int i = 0; i < matrix.size() - 1; ++i) {
+                int lineNumber = i + 1;  // Line number of the order causing arbitrage
+                arbitrageLineNumbers.push_back(lineNumber);
+            }
+            return true;
+        }
+
+        // No solution, indicating no arbitrage
+        return false;
+    }
+
+
+    // Function to solve a system of linear equations using Gaussian elimination
+    bool solveSystem(vector<vector<int>>& matrix, vector<int>& constants) {
+        int numRows = matrix.size();
+        int numCols = matrix[0].size();
+
+        for (int col = 0; col < numCols; ++col) {
+            int pivotRow = -1;
+
+            // Find the row with the maximum value in the current column
+            for (int row = col; row < numRows; ++row) {
+                if (matrix[row][col] != 0) {
+                    if (pivotRow == -1 || abs(matrix[row][col]) > abs(matrix[pivotRow][col])) {
+                        pivotRow = row;
+                    }
+                }
+            }
+
+            if (pivotRow == -1) {
+                // No non-zero pivot element in this column, the system is underdetermined
+                continue;
+            }
+
+            // Swap the current row with the pivot row
+            swap(matrix[col], matrix[pivotRow]);
+            swap(constants[col], constants[pivotRow]);
+
+            // Make the pivot element 1
+            int pivot = matrix[col][col];
+            if (pivot != 0) {
+                for (int i = col; i < numCols; ++i) {
+                    matrix[col][i] /= pivot;
+                }
+                constants[col] /= pivot;
+            }
+
+            // Make the other elements in the current column 0
+            for (int i = 0; i < numRows; ++i) {
+                if (i != col) {
+                    int factor = matrix[i][col];
+                    for (int j = col; j < numCols; ++j) {
+                        matrix[i][j] -= factor * matrix[col][j];
+                    }
+                    constants[i] -= factor * constants[col];
+                }
+            }
+        }
+
+        // Check if the system is inconsistent (no solution)
+        for (int i = numRows - 1; i >= 0; --i) {
+            bool isZeroRow = true;
+            for (int j = 0; j < numCols; ++j) {
+                if (matrix[i][j] != 0) {
+                    isZeroRow = false;
+                    break;
+                }
+            }
+            if (isZeroRow && constants[i] != 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 };
 
@@ -157,33 +262,24 @@ int main() {
     OrderList orderList;
 
     // Example usage: Add orders to the linked list
-    orderList.addOrder("A 1 B 3 10 b#", 1);
-    orderList.addOrder("A 3 B 1 15 b#", 2);
-    orderList.addOrder("A 4 C 5 D 20 5 b#", 3);
-    orderList.addOrder("baba 4 re 5 lele 2 69 s#", 4);
+    orderList.addOrder("X 1 Y -1 10 b#", 1);
+    orderList.addOrder("Z -1 Y 1 -15 b#", 2);
+    orderList.addOrder("Z 1 X -1 10 b#", 3);
 
     // Print the entire linked list
     cout << "Printing the entire linked list:" << endl;
     orderList.printList();
 
-    // Find a node by its line number
-    int lineNumberToFind = 2;
-    Order* foundNode = orderList.findNodeByLineNumber(lineNumberToFind);
-    if (foundNode != nullptr) {
-        cout << "Node with Line Number " << lineNumberToFind << " found!" << endl;
-        orderList.printNodeDetails(foundNode);
+    // Find arbitrage opportunities
+    vector<int> arbitrageLineNumbers;
+    if (orderList.findArbitrage(arbitrageLineNumbers)) {
+        cout << "Arbitrage opportunity found! Orders causing arbitrage:" << endl;
+        for (int lineNumber : arbitrageLineNumbers) {
+            cout << "Line Number: " << lineNumber << endl;
+        }
     } else {
-        cout << "Node with Line Number " << lineNumberToFind << " not found." << endl;
+        cout << "No arbitrage opportunity found." << endl;
     }
-
-    // Delete a node by its line number
-    int lineNumberToDelete = 2;
-    cout << "Deleting node with Line Number " << lineNumberToDelete << endl;
-    orderList.deleteNodeByLineNumber(lineNumberToDelete);
-
-    // Print the updated linked list
-    cout << "Printing the updated linked list:" << endl;
-    orderList.printList();
 
     return 0;
 }
