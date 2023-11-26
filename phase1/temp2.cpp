@@ -18,6 +18,7 @@ struct Node {
         : name(name), stock_price(stock_price), t(t), s(s), b(b), b1(b1), color(RED), left(nullptr), right(nullptr), parent(nullptr) {}
 };
 
+
 class RedBlackTree {
 private:
     Node *root;
@@ -321,14 +322,12 @@ int main() {
 
     std::string messgs = "";
     std::string output = "";
-    std::string x;
-    // std::cin>>x;
-    // std::getline(std::cin, x);
+    std::string x = "";
+    std::cin>>x;
 
-    while(true){
-        std::getline(std::cin, x);
-        if(x == "$") break;
+    while(x != "$"){
         messgs += x;
+        std::getline(std::cin, x);
     }
 
     for(int i = 0; i < messgs.length(); i++){
@@ -342,88 +341,126 @@ int main() {
         iss >> stock_name >> stock_p >> option;
 
         Node* stock = rbTree.search(stock_name);
-        if(stock){
-            // std::cout << printNode(stock);
-            if (option == 'b'){
-                if (stock_p == stock->s || stock_p <= stock->b){
-                    output += "No Trade\n";
-                    continue;
-                }
 
-                if (stock_p > stock -> t ){
-                    output += stock_name;
-                    output += ' ';
-                    output += std::to_string(int(stock_p));
-                    output += ' ';
-                    output += 's';
-                    output += '\n';
-                    stock->t=stock_p;
-                }
-                else{
-                    output += "No Trade\n";
-                    if(stock->b < stock_p){
-                        stock->b = std::max(stock->b, stock_p);
-                    }
-                }
+        
+
+    //         if (option == 'b'){
+    //             if (stock_p == stock->s){
+    //                 output += "No Trade1\n";
+    //                 continue;
+    //             }
+
+    //             if (stock_p > stock->t && stock_p >= stock->b1){
+    //                 output += stock_name;
+    //                 output += ' ';
+    //                 output += std::to_string(int(stock_p));
+    //                 output += ' ';
+    //                 output += 's';
+    //                 output += '\n';
+    //                 stock->b1 = stock_p;
+    //                 stock->t = stock_p;
+    //             }
+    //             else{
+    //                 output += "No Trade2\n";
+    //                 if(stock->b < stock_p){
+    //                     stock->b = std::max(stock->b, stock_p);
+    //                 }
+    //             }
+    //         }
+    //         else{
+    //             if (stock_p == stock->s){
+    //                 output += "No Trade1\n";
+    //                 continue;
+    //             }
+    //             if(stock_p <= stock->t){
+    //                 output += stock_name;
+    //                 output += ' ';
+    //                 output += std::to_string(int(stock_p));
+    //                 output += ' ';
+    //                 output += 'b';
+    //                 output += '\n';
+    //                 stock->t = std::min(stock->t, stock_p);
+    //             }
+    //             else{
+    //                 output += "No Trade3\n";
+    //                 stock->s = std::min(stock->s, stock_p);
+    //             }
+    //         }
+    //     }
+    //     else{
+    //         output += stock_name;
+    //         output += ' ';
+    //         output += std::to_string(int(stock_p));
+    //         output += ' ';
+    //         if(option == 's'){
+    //             output += 'b';
+    //         }
+    //         else{
+    //             output += 's';
+    //             // output += "No Trade4\n";
+    //         }
+    //         // rbTree.insert(stock_name, INT32_MAX, INT32_MAX, INT32_MAX, 0);
+    //         output += '\n';
+    //         rbTree.insert(stock_name, stock_p, stock_p, INT32_MAX, 0);
+    //     }
+    // }
+
+    if(stock){
+        std::cout << printNode(stock);
+        if(option == 's'){
+            if(stock_p == stock->b){
+                output += "No trade\n";
+                continue;
             }
-            // option == s
-            else{
-                // if (stock_p == stock->s || stock_p == stock->b1){
-                //     output += "No Trade\n";
-                //     stock->t = stock_p;
-                //     continue;
-                // }
-                if(stock_p < stock->t){
-                    output += stock_name;
-                    output += ' ';
-                    output += std::to_string(int(stock_p));
-                    output += ' ';
-                    output += 'b';
-                    output += '\n';
-                    stock->t = std::min(stock->t, stock_p);
-                }
-                else{
-                    // std::cout<<stock->s<<"\n";
-                    // if(stock_p < stock->s){
-                    //     output += stock_name;
-                    //     output += ' ';
-                    //     output += std::to_string(int(stock_p));
-                    //     output += ' ';
-                    //     output += 'b';
-                    //     output += '\n';
-                    //     stock->t = std::max(stock->t, stock_p);
-                    //     stock->s = std::min(stock->s, stock_p);
-                    // }
-                    // else {
-                        output += "No Trade\n";
-                        stock->s = std::min(stock->s, stock_p);
-                    // }
-                }
-            }
-            // std::cout << printNode(stock);
-        }
-        else{
-            output += stock_name;
-            output += ' ';
-            output += std::to_string(int(stock_p));
-            output += ' ';
-            if(option == 's'){
+
+            if(stock_p < stock->t){
+                output += stock_name;
+                output += ' ';
+                output += std::to_string(int(stock_p));
+                output += ' ';
                 output += 'b';
+                output += '\n';
+                stock->t = std::min(stock->t, stock_p);}
+            else{
+                output += "No Trade3\n";
+                stock->s = std::min(stock->s, stock_p);
+            }
+        }
+        if(option == 'b'){
+            if(stock_p == stock->s || stock_p <= stock->b){
+                output += "No trade\n";
+                continue;
+            }
+
+
+            if(stock_p > stock->t){
+                output += stock_name;
+                output += ' ';
+                output += std::to_string(int(stock_p));
+                output += ' ';
+                output += 's';
+                output += '\n';
             }
             else{
-                output += 's';
-                // output += "No Trade4\n";
+                output += "No trade\n";
+                stock->b = std::max(stock->b , stock_p);
             }
-            output += '\n';
-            
-            // if(option == 'b') rbTree.insert(stock_name, INT32_MAX, INT32_MAX, INT32_MAX, 0);
-            // else 
-            rbTree.insert(stock_name, stock_p, stock_p, INT32_MAX, 0);}
+        }
+        std::cout<<"kjankja"<<"\n";
     }
-    // std::cout << "Red-Black Tree: \n";
-    // rbTree.printTree();
 
-    std::cout<<output<<std::endl;
+    else{
+        rbTree.insert(stock_name, stock_p, stock_p, INT32_MAX, 0);
+        // else rbTree.insert(stock_name, stock_p, stock_p, INT32_MAX, 0);
+        std::cout<<"kja"<<"\n";
+    }
+
+
+    std::cout << "Red-Black Tree: \n";
+    rbTree.printTree();
+
+    std::cout<<output<<"\n";
 
     return 0;
+}
 }
