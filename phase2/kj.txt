@@ -1,0 +1,65 @@
+
+
+if not present/transaction not done, add to tree,
+
+SELL_TREE
+    |--stock_name
+        |--price--time_entry--broker_name--quantity--| time_expiry
+
+BUY_TREE
+    |--stock_name
+        |--price--time_entry--broker_name--quantity--| time_expiry
+
+
+new SELL order, then compare the stock from the buy tree
+
+new BUY order, then compare peak of that tree to down
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
