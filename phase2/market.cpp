@@ -92,35 +92,25 @@ void market::start()
             while (getline(File, line)) {
                 istringstream iss(line);
                 vs tokens;
-                // cout<<line<<endl;
-
-
                 while (iss >> line) tokens.push_back(line);
                 
-                // cout<<tokens.size()<<endl;
                 if (tokens.size() == 7){
                     int entryTime = stoi(tokens[0]);
                     string brokerName = tokens[1];
                     string option = tokens[2];
                     string stockName = tokens[3];
                     double price = stod(tokens[4].substr(1));
-                    int numOfStocks = stoi(tokens[5].substr(1));
+                    int numOfstonks = stoi(tokens[5].substr(1));
                     int activeTime = stoi(tokens[6]);
                     if(activeTime == -1) activeTime = INT32_MAX;
                     else activeTime += entryTime;
-                    
-                    // cout<<endl;
-                    // cout<<"At timestamp : " << entryTime<<endl;
-                    // cout<<"NAME: "<<stockName<<" option: "<<option<<" Num of stonks: "<<numOfStocks<<" Price: "<<price<<" active time: "<<activeTime<<endl;
 
-                    vvs badavec;
                     vs chotavec;
-                    chotavec.push_back(tokens[4].substr(1)); // price
-                    chotavec.push_back(to_string(entryTime)); //entrytime
-                    chotavec.push_back(tokens[1]); // brokername
-                    chotavec.push_back(tokens[5].substr(1)); // numberofstonks
-                    chotavec.push_back(to_string(activeTime)); // activetime
-                    badavec.push_back(chotavec);
+                    chotavec.push_back(tokens[4].substr(1));
+                    chotavec.push_back(to_string(entryTime));
+                    chotavec.push_back(tokens[1]);
+                    chotavec.push_back(tokens[5].substr(1));
+                    chotavec.push_back(to_string(activeTime));
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -132,40 +122,38 @@ void market::start()
                             // logikkkk
 
                             for(auto &z: at){
-                                if(numOfStocks > 0 && stoi(z[3]) > 0 && stoi(z[0]) >= price){
+                                if(numOfstonks > 0 && stoi(z[3]) > 0 && stoi(z[0]) >= price){
                                     int n;
                                     stringstream(z[3]) >> n;
-                                    if (numOfStocks <= n){
-                                        transactions.push_back(const_sentence(z[2], brokerName, stockName, numOfStocks, stoi(z[0])));
-                                        totalSharesTraded += numOfStocks;
-                                        totalPaisaa += numOfStocks * stoi(z[0]);
-                                        brokers.updateOrAddBroker(z[2], numOfStocks, 0, stoi(z[0]));
-                                        brokers.updateOrAddBroker(brokerName, 0, numOfStocks, stoi(z[0]));
-                                        n -= numOfStocks;
-                                        numOfStocks = 0;
+                                    if (numOfstonks <= n){
+                                        transactions.push_back(const_sentence(z[2], brokerName, stockName, numOfstonks, stoi(z[0])));
+                                        totalSharesTraded += numOfstonks;
+                                        totalPaisaa += numOfstonks * stoi(z[0]);
+                                        brokers.updateOrAddBroker(z[2], numOfstonks, 0, stoi(z[0]));
+                                        brokers.updateOrAddBroker(brokerName, 0, numOfstonks, stoi(z[0]));
+                                        n -= numOfstonks;
+                                        numOfstonks = 0;
                                     }
                                     else{
                                         transactions.push_back(const_sentence(z[2], brokerName, stockName, n, stoi(z[0])));
                                         totalSharesTraded += n;
                                         brokers.updateOrAddBroker(z[2], n, 0, stoi(z[0]));
                                         brokers.updateOrAddBroker(brokerName, 0, n, stoi(z[0]));
-                                        numOfStocks -= n;
+                                        numOfstonks -= n;
                                         totalPaisaa += n * stoi(z[0]);
                                         n = 0;
                                     }
                                     z[3] = to_string(n);
                                 }
                             }
-
-                            // cout<<numOfStocks<<endl;
-                            if(numOfStocks){
+                            if(numOfstonks){
                                 Node* ta = sellTree.search(stockName);
                                 vs tas;
-                                tas.push_back(tokens[4].substr(1)); // price
-                                tas.push_back(tokens[0]); //entrytime
-                                tas.push_back(tokens[1]); // brokername
-                                tas.push_back(to_string(numOfStocks)); // numberofstonks
-                                tas.push_back(to_string(activeTime)); // activetime
+                                tas.push_back(tokens[4].substr(1));
+                                tas.push_back(tokens[0]);
+                                tas.push_back(tokens[1]);
+                                tas.push_back(to_string(numOfstonks));
+                                tas.push_back(to_string(activeTime));
 
                                 if(ta){
                                     vvs sup = ta->stockData;
@@ -173,7 +161,6 @@ void market::start()
                                     ta->stockData = sortData(sup, 1);
                                 }
                                 else{
-                                // cout<<"hemlo"<<endl;
                                     vvs sup;
                                     sup.push_back(tas);                                    
                                     sellTree.insert(stockName, sup);
@@ -204,17 +191,17 @@ void market::start()
                             // logikkkk
 
                             for(auto &z: at){
-                                if(numOfStocks > 0 && stoi(z[3]) > 0 && stoi(z[0]) <= price){
+                                if(numOfstonks > 0 && stoi(z[3]) > 0 && stoi(z[0]) <= price){
                                     int n;
                                     stringstream(z[3]) >> n;
-                                    if (numOfStocks <= n){
-                                        transactions.push_back(const_sentence(brokerName, z[2], stockName, numOfStocks, stoi(z[0])));
-                                        totalSharesTraded += numOfStocks;
-                                        totalPaisaa += numOfStocks * stoi(z[0]);
-                                        brokers.updateOrAddBroker(brokerName, numOfStocks, 0, stoi(z[0]));
-                                        brokers.updateOrAddBroker(z[2], 0, numOfStocks, stoi(z[0]));
-                                        n -= numOfStocks;
-                                        numOfStocks = 0;
+                                    if (numOfstonks <= n){
+                                        transactions.push_back(const_sentence(brokerName, z[2], stockName, numOfstonks, stoi(z[0])));
+                                        totalSharesTraded += numOfstonks;
+                                        totalPaisaa += numOfstonks * stoi(z[0]);
+                                        brokers.updateOrAddBroker(brokerName, numOfstonks, 0, stoi(z[0]));
+                                        brokers.updateOrAddBroker(z[2], 0, numOfstonks, stoi(z[0]));
+                                        n -= numOfstonks;
+                                        numOfstonks = 0;
                                     }
                                     else{
                                         transactions.push_back(const_sentence(brokerName, z[2], stockName, n, stoi(z[0])));
@@ -222,21 +209,21 @@ void market::start()
                                         brokers.updateOrAddBroker(brokerName, n, 0, stoi(z[0]));
                                         brokers.updateOrAddBroker(z[2], 0, n, stoi(z[0]));
                                         totalSharesTraded += n;
-                                        numOfStocks -= n;
+                                        numOfstonks -= n;
                                         n = 0;
                                     }
                                     z[3] = to_string(n);
                                 }
                             }
 
-                            if(numOfStocks){
+                            if(numOfstonks){
                                 Node* ta = buyTree.search(stockName);
                                 vs tas;
-                                tas.push_back(tokens[4].substr(1)); // price
-                                tas.push_back(tokens[0]); //entrytime
-                                tas.push_back(tokens[1]); // brokername
-                                tas.push_back(to_string(numOfStocks)); // numberofstonks
-                                tas.push_back(to_string(activeTime)); // activetime
+                                tas.push_back(tokens[4].substr(1));
+                                tas.push_back(tokens[0]);
+                                tas.push_back(tokens[1]);
+                                tas.push_back(to_string(numOfstonks));
+                                tas.push_back(to_string(activeTime));
 
                                 if(ta){
                                     vvs sup = ta->stockData;
@@ -264,31 +251,9 @@ void market::start()
                             }
                         }
                     }
-
-                    // filterStonks();
-                    
-                    // cout<<"Before Update---------------"<<endl;
-                    // cout<<"ST"<<endl;
-                    // sellTree.printTree();
-                    // cout<<"BT"<<endl;
-                    // buyTree.printTree();
-                    // cout<<"---------------"<<endl;
-
                     sellTree.updateTree(sellTree.getRoot(), to_string(entryTime));
                     buyTree.updateTree(buyTree.getRoot(), to_string(entryTime));
-
-                    // cout<<"After Update---------------"<<endl;
-                    // cout<<"ST"<<endl;
-                    // sellTree.printTree();
-                    // cout<<"BT"<<endl;
-                    // buyTree.printTree();
-                    // cout<<"---------------"<<endl;
-                    // update krna hai dono trees for time and stonks
                 }
-                // else
-                // {
-                //     cerr << "Error: Unexpected number of tokens in the line." << endl;
-                // }
             }
 
         for(auto &x: transactions) cout<<x<<endl;
