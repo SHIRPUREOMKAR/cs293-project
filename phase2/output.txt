@@ -1,241 +1,33 @@
 TL
-0 KarGoCorp SELL AMZN $100 #30 10
 0 KarGoExpress SELL AMD $120 #32 1
-1 KarGoKrab BUY AMZN $130 #12 0
+0 KarGoCorp SELL AMZN $100 #30 10
 1 KarGoCorp BUY GE $200 #20 8
-1 KarGoCorp BUY AMZN $50 #30 5
+1 KarGoKrab BUY AMZN $130 #12 0
 2 KarGoTravels BUY AMD $100 #50 10
-2 KarGoCorp SELL AMZN $50 #5 0
+2 KarGoCorp BUY AMZN $50 #30 5
 3 KarGoKrab BUY AMD $130 #10 7
-3 KarGoTravels BUY AMD $150 #25 0
+3 KarGoCorp SELL AMZN $50 #5 0
 4 KarGoExpress SELL GE $150 #50 6
-4 KarGoExpress SELL AMD $80 #100 -1
+4 KarGoTravels BUY AMD $150 #25 0
 5 KarGoExpress BUY NFLX $80 #15 6
-5 KarGoCorp BUY AMD $120 #10 1
+5 KarGoExpress SELL AMD $80 #100 -1
 6 KarGoTravels SELL AMZN $50 #22 -1
-6 KarGoKrab BUY GE $110 #10 3
+6 KarGoCorp BUY AMD $120 #10 1
 7 KarGoCorp SELL GE $50 #15 -1
+7 KarGoKrab BUY GE $110 #10 3
 !@
 @!
 Successfully Initiated!
+KarGoKrab purchased 12 share of AMZN from KarGoCorp for $100/share
+KarGoCorp purchased 5 share of AMZN from KarGoCorp for $50/share
+KarGoCorp purchased 20 share of GE from KarGoExpress for $200/share
+KarGoKrab purchased 10 share of AMD from KarGoExpress for $130/share
+KarGoTravels purchased 50 share of AMD from KarGoExpress for $100/share
+KarGoCorp purchased 22 share of AMZN from KarGoTravels for $50/share
+KarGoCorp purchased 10 share of AMD from KarGoExpress for $80/share
+KarGoKrab purchased 10 share of GE from KarGoCorp for $50/share
 
-At timestamp : 0
-NAME: AMZN option: SELLNum of stonks: 30 Price: 100 active time: 10
-ST
-|-- AMZN, Data: 100 0 KarGoCorp 30 10 --- 
-
-BT
-
----------------
-
-At timestamp : 0
-NAME: AMD option: SELLNum of stonks: 32 Price: 120 active time: 1
-ST
-|-- AMZN, Data: 100 0 KarGoCorp 30 10 --- 
-	|-- AMD, Data: 120 0 KarGoExpress 32 1 --- 
-
-BT
-
----------------
-
-At timestamp : 1
-NAME: AMZN option: BUYNum of stonks: 12 Price: 130 active time: 1
-
-|-- Stock Name: AMZN, Stock Data: 100 0 KarGoCorp 30 10 | 
-ST
-|-- AMZN, Data: 100 0 KarGoCorp 18 10 --- 
-	|-- AMD, Data: 120 0 KarGoExpress 32 1 --- 
-
-BT
-
----------------
-
-At timestamp : 1
-NAME: GE option: BUYNum of stonks: 20 Price: 200 active time: 9
-ST
-|-- AMZN, Data: 100 0 KarGoCorp 18 10 --- 
-	|-- AMD, Data: 120 0 KarGoExpress 32 1 --- 
-
-BT
-|-- GE, Data: 200 1 KarGoCorp 20 9 --- 
-
----------------
-
-At timestamp : 1
-NAME: AMZN option: BUYNum of stonks: 30 Price: 50 active time: 6
-
-|-- Stock Name: AMZN, Stock Data: 100 0 KarGoCorp 18 10 | 
-ST
-|-- AMZN, Data: 100 0 KarGoCorp 18 10 --- 
-	|-- AMD, Data: 120 0 KarGoExpress 32 1 --- 
-
-BT
-|-- GE, Data: 200 1 KarGoCorp 20 9 --- 
-	|-- AMZN, Data: 50 1 KarGoCorp 30 6 --- 
-
----------------
-
-At timestamp : 2
-NAME: AMD option: BUYNum of stonks: 50 Price: 100 active time: 12
-
-|-- Stock Name: AMD, Stock Data: 120 0 KarGoExpress 32 1 | 
-ST
-|-- AMZN, Data: 100 0 KarGoCorp 18 10 --- 
-	|-- AMD, Data: 
-
-BT
-	|-- GE, Data: 200 1 KarGoCorp 20 9 --- 
-|-- AMZN, Data: 50 1 KarGoCorp 30 6 --- 
-	|-- AMD, Data: 100 2 KarGoTravels 50 12 --- 
-
----------------
-
-At timestamp : 2
-NAME: AMZN option: SELLNum of stonks: 5 Price: 50 active time: 2
-ST
-|-- AMZN, Data: 100 0 KarGoCorp 18 10 --- 
-	|-- AMD, Data: 
-
-BT
-	|-- GE, Data: 200 1 KarGoCorp 20 9 --- 
-|-- AMZN, Data: 50 1 KarGoCorp 25 6 --- 
-	|-- AMD, Data: 100 2 KarGoTravels 50 12 --- 
-
----------------
-
-At timestamp : 3
-NAME: AMD option: BUYNum of stonks: 10 Price: 130 active time: 10
-
-|-- Stock Name: AMD, Stock Data: 
-ST
-|-- AMZN, Data: 100 0 KarGoCorp 18 10 --- 
-	|-- AMD, Data: 
-
-BT
-	|-- GE, Data: 200 1 KarGoCorp 20 9 --- 
-|-- AMZN, Data: 50 1 KarGoCorp 25 6 --- 
-	|-- AMD, Data: 130 3 KarGoKrab 10 10 --- 100 2 KarGoTravels 50 12 --- 
-
----------------
-
-At timestamp : 3
-NAME: AMD option: BUYNum of stonks: 25 Price: 150 active time: 3
-
-|-- Stock Name: AMD, Stock Data: 
-ST
-|-- AMZN, Data: 100 0 KarGoCorp 18 10 --- 
-	|-- AMD, Data: 
-
-BT
-	|-- GE, Data: 200 1 KarGoCorp 20 9 --- 
-|-- AMZN, Data: 50 1 KarGoCorp 25 6 --- 
-	|-- AMD, Data: 150 3 KarGoTravels 25 3 --- 130 3 KarGoKrab 10 10 --- 100 2 KarGoTravels 50 12 --- 
-
----------------
-
-At timestamp : 4
-NAME: GE option: SELLNum of stonks: 50 Price: 150 active time: 10
-ST
-	|-- GE, Data: 150 4 KarGoExpress 30 10 --- 
-|-- AMZN, Data: 100 0 KarGoCorp 18 10 --- 
-	|-- AMD, Data: 
-
-BT
-	|-- GE, Data: 
-|-- AMZN, Data: 50 1 KarGoCorp 25 6 --- 
-	|-- AMD, Data: 130 3 KarGoKrab 10 10 --- 100 2 KarGoTravels 50 12 --- 
-
----------------
-
-At timestamp : 4
-NAME: AMD option: SELLNum of stonks: 100 Price: 80 active time: 2147483647
-ST
-	|-- GE, Data: 150 4 KarGoExpress 30 10 --- 
-|-- AMZN, Data: 100 0 KarGoCorp 18 10 --- 
-	|-- AMD, Data: 80 4 KarGoExpress 40 2147483647 --- 
-
-BT
-	|-- GE, Data: 
-|-- AMZN, Data: 50 1 KarGoCorp 25 6 --- 
-	|-- AMD, Data: 
-
----------------
-
-At timestamp : 5
-NAME: NFLX option: BUYNum of stonks: 15 Price: 80 active time: 11
-ST
-	|-- GE, Data: 150 4 KarGoExpress 30 10 --- 
-|-- AMZN, Data: 100 0 KarGoCorp 18 10 --- 
-	|-- AMD, Data: 80 4 KarGoExpress 40 2147483647 --- 
-
-BT
-		|-- NFLX, Data: 80 5 KarGoExpress 15 11 --- 
-	|-- GE, Data: 
-|-- AMZN, Data: 50 1 KarGoCorp 25 6 --- 
-	|-- AMD, Data: 
-
----------------
-
-At timestamp : 5
-NAME: AMD option: BUYNum of stonks: 10 Price: 120 active time: 6
-
-|-- Stock Name: AMD, Stock Data: 80 4 KarGoExpress 40 2147483647 | 
-ST
-	|-- GE, Data: 150 4 KarGoExpress 30 10 --- 
-|-- AMZN, Data: 100 0 KarGoCorp 18 10 --- 
-	|-- AMD, Data: 80 4 KarGoExpress 30 2147483647 --- 
-
-BT
-		|-- NFLX, Data: 80 5 KarGoExpress 15 11 --- 
-	|-- GE, Data: 
-|-- AMZN, Data: 50 1 KarGoCorp 25 6 --- 
-	|-- AMD, Data: 
-
----------------
-
-At timestamp : 6
-NAME: AMZN option: SELLNum of stonks: 22 Price: 50 active time: 2147483647
-ST
-	|-- GE, Data: 150 4 KarGoExpress 30 10 --- 
-|-- AMZN, Data: 100 0 KarGoCorp 18 10 --- 
-	|-- AMD, Data: 80 4 KarGoExpress 30 2147483647 --- 
-
-BT
-		|-- NFLX, Data: 80 5 KarGoExpress 15 11 --- 
-	|-- GE, Data: 
-|-- AMZN, Data: 50 1 KarGoCorp 3 6 --- 
-	|-- AMD, Data: 
-
----------------
-
-At timestamp : 6
-NAME: GE option: BUYNum of stonks: 10 Price: 110 active time: 9
-
-|-- Stock Name: GE, Stock Data: 150 4 KarGoExpress 30 10 | 
-ST
-	|-- GE, Data: 150 4 KarGoExpress 30 10 --- 
-|-- AMZN, Data: 100 0 KarGoCorp 18 10 --- 
-	|-- AMD, Data: 80 4 KarGoExpress 30 2147483647 --- 
-
-BT
-		|-- NFLX, Data: 80 5 KarGoExpress 15 11 --- 
-	|-- GE, Data: 110 6 KarGoKrab 10 9 --- 
-|-- AMZN, Data: 50 1 KarGoCorp 3 6 --- 
-	|-- AMD, Data: 
-
----------------
-
-At timestamp : 7
-NAME: GE option: SELLNum of stonks: 15 Price: 50 active time: 2147483647
-ST
-	|-- GE, Data: 50 7 KarGoCorp 5 2147483647 --- 150 4 KarGoExpress 30 10 --- 
-|-- AMZN, Data: 100 0 KarGoCorp 18 10 --- 
-	|-- AMD, Data: 80 4 KarGoExpress 30 2147483647 --- 
-
-BT
-		|-- NFLX, Data: 80 5 KarGoExpress 15 11 --- 
-	|-- GE, Data: 
-|-- AMZN, Data: 
-	|-- AMD, Data: 
-
----------------
+---End of Day---
+Total Amount of Money Transferred: $14150
+Number of Completed Trades: 8
+Number of Shares Traded: 139

@@ -11,9 +11,7 @@ typedef vector<string> vs;
 
 using namespace std;
 
-// ----------------------------------------------------------------
 vvs sortData(vvs data, bool ascending) {
-    // 1 for descending, 0 for ascending.....
     int n = data.size();
     for (int i = 1; i < n; ++i) {
         vs key = data[i];
@@ -27,13 +25,45 @@ vvs sortData(vvs data, bool ascending) {
             if ((ascending && num1 > num2) || (!ascending && num1 < num2)) {
                 data[j + 1] = data[j];
                 --j;
-            } else {
-                break;
-            }
+            } else if (num1 == num2) {
+                int num3, num4;
+                stringstream(data[j][1]) >> num3;
+                stringstream(key[1]) >> num4;
+
+                if (num3 > num4) {
+                    data[j + 1] = data[j];
+                    --j;
+                } else if (num3 == num4) {
+                    int num5, num6;
+                    stringstream(data[j][2]) >> num5;
+                    stringstream(key[2]) >> num6;
+
+                    if (num5 > num6) {
+                        data[j + 1] = data[j];
+                        --j;
+                    } else break;
+                } else break;
+            } else break;
         }
         data[j + 1] = key;
     }
     return data;
+}
+
+
+string const_sentence(string buyer, string seller, string stonkName, int numOfShares, int price){
+    string fk = "";
+    fk += buyer;
+    fk += " purchased ";
+    fk += to_string(numOfShares);
+    fk += " share of ";
+    fk += stonkName;
+    fk += " from ";
+    fk += seller;
+    fk += " for $";
+    fk += to_string(price);
+    fk += "/share";
+    return fk;
 }
 
 
@@ -54,8 +84,10 @@ void market::start()
         RedBlackTree buyTree;
         RedBlackTree sellTree;
         
-        ofstream outputFile("output_processed.txt");
-        if (outputFile.is_open()) {
+        vs transactions;
+        int totalSharesTraded = 0;        
+        int totalPaisaa = 0;        
+  
             while (getline(File, line)) {
                 istringstream iss(line);
                 vs tokens;
@@ -76,9 +108,9 @@ void market::start()
                     if(activeTime == -1) activeTime = INT32_MAX;
                     else activeTime += entryTime;
                     
-                    cout<<endl;
-                    cout<<"At timestamp : " << entryTime<<endl;
-                    cout<<"NAME: "<<stockName<<" option: "<<option<<"Num of stonks: "<<numOfStocks<<" Price: "<<price<<" active time: "<<activeTime<<endl;
+                    // cout<<endl;
+                    // cout<<"At timestamp : " << entryTime<<endl;
+                    // cout<<"NAME: "<<stockName<<" option: "<<option<<" Num of stonks: "<<numOfStocks<<" Price: "<<price<<" active time: "<<activeTime<<endl;
 
                     vvs badavec;
                     vs chotavec;
@@ -88,6 +120,8 @@ void market::start()
                     chotavec.push_back(tokens[5].substr(1)); // numberofstonks
                     chotavec.push_back(to_string(activeTime)); // activetime
                     badavec.push_back(chotavec);
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------
 
                     if(option == "SELL"){
                         Node* buy_temp = buyTree.search(stockName);
@@ -101,11 +135,17 @@ void market::start()
                                     int n;
                                     stringstream(z[3]) >> n;
                                     if (numOfStocks <= n){
+                                        transactions.push_back(const_sentence(z[2], brokerName, stockName, numOfStocks, stoi(z[0])));
+                                        totalSharesTraded += numOfStocks;
+                                        totalPaisaa += numOfStocks * stoi(z[0]);
                                         n -= numOfStocks;
                                         numOfStocks = 0;
                                     }
                                     else{
+                                        transactions.push_back(const_sentence(z[2], brokerName, stockName, n, stoi(z[0])));
+                                        totalSharesTraded += n;
                                         numOfStocks -= n;
+                                        totalPaisaa += n * stoi(z[0]);
                                         n = 0;
                                     }
                                     z[3] = to_string(n);
@@ -121,8 +161,6 @@ void market::start()
                                 tas.push_back(tokens[1]); // brokername
                                 tas.push_back(to_string(numOfStocks)); // numberofstonks
                                 tas.push_back(to_string(activeTime)); // activetime
-                                // sellTree.printNode(stockName);
-                                // for(const auto &s: tas) cout<<s<<"\t";
 
                                 if(ta){
                                     vvs sup = ta->stockData;
@@ -136,11 +174,6 @@ void market::start()
                                     sellTree.insert(stockName, sup);
                                 }
                             }
-
-                            //sort
-                            // at.push_back(chotavec);
-
-                            // find_in_buy->stockData = sortData(at, 1);
                         }
                         else{
                             Node* q = sellTree.search(stockName);
@@ -157,26 +190,29 @@ void market::start()
                         }
                     }
     // ------------------------------------------------------------------------
+
                     else if(option == "BUY"){
                         Node* lala = sellTree.search(stockName);
                         if(lala){
-                            sellTree.printNode(stockName);
                             vvs& at = lala->stockData;
 
                             // logikkkk
 
                             for(auto &z: at){
                                 if(numOfStocks > 0 && stoi(z[3]) > 0 && stoi(z[0]) <= price){
-                                    // cout<<"No of rem stocks: "<<numOfStocks<<endl;
-                                    // for(auto &w: z) cout<<w<<" ";
                                     int n;
                                     stringstream(z[3]) >> n;
-                                    // cout<<n<<endl;
                                     if (numOfStocks <= n){
+                                        transactions.push_back(const_sentence(brokerName, z[2], stockName, numOfStocks, stoi(z[0])));
+                                        totalSharesTraded += numOfStocks;
+                                        totalPaisaa += numOfStocks * stoi(z[0]);
                                         n -= numOfStocks;
                                         numOfStocks = 0;
                                     }
                                     else{
+                                        transactions.push_back(const_sentence(brokerName, z[2], stockName, n, stoi(z[0])));
+                                        totalPaisaa += n * stoi(z[0]);
+                                        totalSharesTraded += n;
                                         numOfStocks -= n;
                                         n = 0;
                                     }
@@ -184,7 +220,6 @@ void market::start()
                                 }
                             }
 
-                            // cout<<"No of rem stocks: "<<numOfStocks<<endl;
                             if(numOfStocks){
                                 Node* ta = buyTree.search(stockName);
                                 vs tas;
@@ -234,27 +269,26 @@ void market::start()
                     buyTree.updateTree(buyTree.getRoot(), to_string(entryTime));
 
                     // cout<<"After Update---------------"<<endl;
-                    cout<<"ST"<<endl;
-                    sellTree.printTree();
-                    cout<<"BT"<<endl;
-                    buyTree.printTree();
-                    cout<<"---------------"<<endl;
+                    // cout<<"ST"<<endl;
+                    // sellTree.printTree();
+                    // cout<<"BT"<<endl;
+                    // buyTree.printTree();
+                    // cout<<"---------------"<<endl;
                     // update krna hai dono trees for time and stonks
-
                 }
                 // else
                 // {
-                    // cerr << "Error: Unexpected number of tokens in the line." << endl;
+                //     cerr << "Error: Unexpected number of tokens in the line." << endl;
                 // }
             }
-        }
-        else
-        {
-            cerr << "Error: Unable to open the output file for writing." << endl;
-        }
 
+        for(auto &x: transactions) cout<<x<<endl;
+        cout<<endl<<"---End of Day---"<<endl;
+        cout<<"Total Amount of Money Transferred: $"<<totalPaisaa<<endl;
+        cout<<"Number of Completed Trades: "<<transactions.size()<<endl;
+        cout<<"Number of Shares Traded: "<<totalSharesTraded<<endl;
+        
         File.close();
-        outputFile.close();
     }
     else
     {

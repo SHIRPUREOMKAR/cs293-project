@@ -8,17 +8,18 @@
 
 using namespace std;
 
+// ---------------------------------------------------------------------------------------------------
+
 enum Color { RED, BLACK };
 
 struct Node {
     string name;
-    vector<vector<string>> stockData;  // Change here
+    vector<vector<string>> stockData;
     Color color;
     Node *left, *right, *parent;
 
     Node(string name, vector<vector<string>> stockData) : name(name), stockData(stockData), color(RED), left(nullptr), right(nullptr), parent(nullptr) {}
 };
-
 class RedBlackTree {
 private:
     Node *root;
@@ -37,22 +38,8 @@ public:
     Node* search(string name);
     Node* getRoot();
     void printNode(string proxy);
-    // void traverseInOrder(void (*callback)(Node*)) {
-    //     traverseInOrder(root, callback);
-    // }
     void updateTree(Node* root, const string curr_time);
-
 };
-
-// void traverseInOrder(Node* root, void (*callback)(Node*)) {
-//     if (root == nullptr) {
-//         return;
-//     }
-
-//     traverseInOrder(root->left, callback);
-//     callback(root);
-//     traverseInOrder(root->right, callback);
-// }
 
 void traverse_print(Node *root, int x) {
     if (root == nullptr) return;
@@ -60,9 +47,7 @@ void traverse_print(Node *root, int x) {
     for (int i = 0; i < x; i++) cout << "\t";
     cout << "|-- " << root->name << ", Data: ";
     for (const auto& dataVec : root->stockData) {
-        for (const auto& data : dataVec) {
-            cout << data << " ";
-        }
+        for (const auto& data : dataVec) cout << data << " ";
         cout << "--- ";
     }
     cout << endl;
@@ -178,7 +163,6 @@ void RedBlackTree::insert(string name, vector<vector<string>> stockData) {
     insertFixup(z);
 }
 
-
 void RedBlackTree::remove(string name) {
     Node *z = root;
     while (z) {
@@ -280,7 +264,6 @@ void RedBlackTree::remove(string name) {
 
 void RedBlackTree::printNode(string proxy) {
     Node* p = search(proxy);
-    // ostringstream oss;
     if (p) {
         cout << endl << "|-- Stock Name: " << p->name << ", Stock Data: ";
         for (const auto &dataVec : p->stockData) {
@@ -289,32 +272,20 @@ void RedBlackTree::printNode(string proxy) {
         }
         cout << endl;
     } else cout << "Not Found!!";
-    // return oss.str();
 }
 
 void RedBlackTree::updateTree(Node* node, const string curr_time){
     if (node == nullptr) return;
     else{
         auto& stockData = node->stockData;
-        // auto newEnd = stockData.begin();
         vector<vector<string>> temp;
         for (const auto& subvec : stockData) {
             int value1, value2;
             stringstream(subvec[1]) >> value1;
             stringstream(subvec[4]) >> value2;
-            // cout<<value1<<" "<<value2<<" "<<curr_time<<" "<<subvec[3]<<endl;
-            if ((value1 <= stoi(curr_time) && stoi(curr_time) <= value2) && subvec[3] != "0") {
-                temp.push_back(subvec);
-            }
-            // for(auto &k: subvec) cout<<"ala "<<k<<" ";
-            // cout<<endl;
+            if ((value1 <= stoi(curr_time) && stoi(curr_time) <= value2) && subvec[3] != "0") temp.push_back(subvec);
         }
-        // for(auto &a: temp){
-        //     for(auto &x:a) cout<<x<<" ";
-        // }
-        // cout<<endl;
         stockData = temp;
-        // stockData.erase(newEnd, stockData.end());
     }
     updateTree(node->left, curr_time);
     updateTree(node->right, curr_time);
@@ -323,6 +294,9 @@ void RedBlackTree::updateTree(Node* node, const string curr_time){
 Node* RedBlackTree::getRoot(){
     return root;
 }
+
+// -------------------------------------------------------------------------------------------------------------------------
+
 
 
 #endif
