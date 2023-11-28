@@ -31,3 +31,7 @@ KarGoKrab purchased 10 share of GE from KarGoCorp for $50/share
 Total Amount of Money Transferred: $14150
 Number of Completed Trades: 8
 Number of Shares Traded: 139
+KarGoKrab bought 32 and sold 0 for a net transfer of $-3000
+KarGoCorp bought 57 and sold 27 for a net transfer of $-4200
+KarGoExpress bought 0 and sold 90 for a net transfer of $11100
+KarGoTravels bought 50 and sold 22 for a net transfer of $-3900

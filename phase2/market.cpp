@@ -83,6 +83,7 @@ void market::start()
         string line;
         RedBlackTree buyTree;
         RedBlackTree sellTree;
+        brokManager brokers;
         
         vs transactions;
         int totalSharesTraded = 0;        
@@ -138,12 +139,16 @@ void market::start()
                                         transactions.push_back(const_sentence(z[2], brokerName, stockName, numOfStocks, stoi(z[0])));
                                         totalSharesTraded += numOfStocks;
                                         totalPaisaa += numOfStocks * stoi(z[0]);
+                                        brokers.updateOrAddBroker(z[2], numOfStocks, 0, stoi(z[0]));
+                                        brokers.updateOrAddBroker(brokerName, 0, numOfStocks, stoi(z[0]));
                                         n -= numOfStocks;
                                         numOfStocks = 0;
                                     }
                                     else{
                                         transactions.push_back(const_sentence(z[2], brokerName, stockName, n, stoi(z[0])));
                                         totalSharesTraded += n;
+                                        brokers.updateOrAddBroker(z[2], n, 0, stoi(z[0]));
+                                        brokers.updateOrAddBroker(brokerName, 0, n, stoi(z[0]));
                                         numOfStocks -= n;
                                         totalPaisaa += n * stoi(z[0]);
                                         n = 0;
@@ -206,12 +211,16 @@ void market::start()
                                         transactions.push_back(const_sentence(brokerName, z[2], stockName, numOfStocks, stoi(z[0])));
                                         totalSharesTraded += numOfStocks;
                                         totalPaisaa += numOfStocks * stoi(z[0]);
+                                        brokers.updateOrAddBroker(brokerName, numOfStocks, 0, stoi(z[0]));
+                                        brokers.updateOrAddBroker(z[2], 0, numOfStocks, stoi(z[0]));
                                         n -= numOfStocks;
                                         numOfStocks = 0;
                                     }
                                     else{
                                         transactions.push_back(const_sentence(brokerName, z[2], stockName, n, stoi(z[0])));
                                         totalPaisaa += n * stoi(z[0]);
+                                        brokers.updateOrAddBroker(brokerName, n, 0, stoi(z[0]));
+                                        brokers.updateOrAddBroker(z[2], 0, n, stoi(z[0]));
                                         totalSharesTraded += n;
                                         numOfStocks -= n;
                                         n = 0;
@@ -287,7 +296,7 @@ void market::start()
         cout<<"Total Amount of Money Transferred: $"<<totalPaisaa<<endl;
         cout<<"Number of Completed Trades: "<<transactions.size()<<endl;
         cout<<"Number of Shares Traded: "<<totalSharesTraded<<endl;
-        
+        brokers.displayBrokers();
         File.close();
     }
     else

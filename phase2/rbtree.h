@@ -297,6 +297,45 @@ Node* RedBlackTree::getRoot(){
 
 // -------------------------------------------------------------------------------------------------------------------------
 
+struct Broker {
+    std::string name;
+    int sharesBought;
+    int sharesSold;
+    int totalMoney;
+};
 
+class brokManager {
+private:
+    std::vector<Broker> brokers;
+
+public:
+    bool brokerExists(const std::string& brokerName) const {
+        for (const auto& broker : brokers) {
+            if (broker.name == brokerName) {
+                return true;
+            }
+        }
+        return false;
+    }
+    void updateOrAddBroker(const std::string& brokerName, int bought, int sold, double price) {
+        for (auto& broker : brokers) {
+            if (broker.name == brokerName) {
+                broker.sharesBought += bought;
+                broker.sharesSold += sold;
+                broker.totalMoney += price * (sold - bought);
+                return;
+            }
+        }
+        int total = price * (sold - bought);
+        Broker newBroker{brokerName, bought, sold, total};
+        brokers.push_back(newBroker);
+    }
+
+    void displayBrokers() const {
+        for (const auto& broker : brokers) {
+            cout<<broker.name<<" bought "<<broker.sharesBought<<" and sold "<<broker.sharesSold<<" for a net transfer of $"<<broker.totalMoney<<endl;
+        }
+    }
+};
 
 #endif
